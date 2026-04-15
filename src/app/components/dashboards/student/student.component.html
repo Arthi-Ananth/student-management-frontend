@@ -1,0 +1,136 @@
+<!-- 🎓 Student Dashboard - Full Functionality -->
+<div class="student-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar-portal">
+    <header class="brand-header">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="brand-name">EduFlow</span>
+    </header>
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li><button class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>My Learning</span>
+        </button></li>
+        <li><button class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Course Catalog</span>
+        </button></li>
+      </ul>
+      <button (click)="logout()" class="logout-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Viewport -->
+  <main class="main-canvas">
+    <header class="dashboard-header">
+      <div class="user-greeting">
+        <h1>Welcome back, {{ user?.name }}</h1>
+        <p class="status-msg">You're making great progress this semester!</p>
+      </div>
+      <div class="user-profile-badge">
+        <div class="profile-text">
+          <strong class="email">{{ user?.email }}</strong>
+          <span class="id-tag">Student ID: #{{ user?._id?.slice(-6).toUpperCase() }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-scroll">
+
+      <!-- Error Banner -->
+      <div *ngIf="error" class="error-notice">
+        <span>⚠️ {{ error }}</span>
+        <button (click)="error = ''">✕</button>
+      </div>
+
+      <!-- Growth Analytics -->
+      <section class="metrics-grid">
+        <article class="metric-card" *ngFor="let stat of stats">
+          <div class="metric-icon" [attr.data-type]="stat.color">
+            <svg *ngIf="stat.color === 'primary'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <svg *ngIf="stat.color === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <svg *ngIf="stat.color === 'warning'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <svg *ngIf="stat.color === 'danger'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+          </div>
+          <div class="metric-details">
+            <span class="label">{{ stat.label }}</span>
+            <div class="value-row">
+              <h3 class="value">{{ stat.value }}</h3>
+              <span class="trend" [attr.data-trend]="stat.trend.startsWith('+') ? 'up' : stat.trend.startsWith('-') ? 'down' : 'stable'">{{ stat.trend }}</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Enrolled Courses -->
+      <section class="enrolled-vault">
+        <header class="vault-heading">
+          <h2>My Learning Path</h2>
+          <span class="vault-count">{{ studentCourses.length }} courses active</span>
+        </header>
+
+        <div class="vault-grid">
+          <article class="learning-tile fade-up" *ngFor="let course of studentCourses">
+            <span class="tile-tag">{{ course.code }}</span>
+            <h3 class="tile-title">{{ course.title }}</h3>
+            <p class="tile-meta">Instructor: {{ course.teacher?.name || 'Academic Dept.' }}</p>
+            <div class="learning-progress">
+              <div class="progress-labels"><span>Progress</span><span>75%</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width: 75%"></div></div>
+            </div>
+            <div class="tile-actions">
+              <button class="action-btn-primary">Continue Learning</button>
+              <button class="unenroll-btn" (click)="unenroll(course._id!)" [disabled]="unenrollingId === course._id">
+                {{ unenrollingId === course._id ? 'Unenrolling...' : 'Unenroll' }}
+              </button>
+            </div>
+          </article>
+
+          <article class="empty-state" *ngIf="studentCourses.length === 0">
+            <div class="empty-illustration">📚</div>
+            <h3>Your Learning Path is Empty</h3>
+            <p>Discover your next challenge in the catalog below.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Course Catalog -->
+      <section class="catalog-discovery">
+        <header class="discovery-header">
+          <h2>Expand Your Knowledge</h2>
+          <span class="vault-count">{{ availableCourses.length }} courses available</span>
+        </header>
+        <div class="discovery-grid">
+          <article class="discovery-card fade-up" *ngFor="let course of availableCourses">
+            <header class="discovery-card-header">
+              <span class="code-badge">{{ course.code }}</span>
+            </header>
+            <h3 class="discovery-title">{{ course.title }}</h3>
+            <p class="discovery-desc">{{ course.description }}</p>
+            <footer class="discovery-footer">
+              <div class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>{{ course.schedule }}</span>
+              </div>
+              <button class="enroll-cta" (click)="enroll(course._id!)" [disabled]="enrollingId === course._id">
+                {{ enrollingId === course._id ? 'Enrolling...' : 'Enroll Now' }}
+              </button>
+            </footer>
+          </article>
+
+          <div class="empty-placeholder" *ngIf="availableCourses.length === 0 && studentCourses.length > 0">
+            <p>🎉 You're enrolled in all available courses!</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>

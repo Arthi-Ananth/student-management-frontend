@@ -1,0 +1,106 @@
+<!-- 📝 Premium Semantic Signup (Clean Code Edition) -->
+<main class="signup-viewport">
+  <div class="signup-card fade-up">
+    
+    <!-- Branding Header -->
+    <header class="card-header">
+      <div class="identity-logo">A</div>
+      <h2 class="card-title">Create Your Account</h2>
+      <p class="card-subtitle">Join the EduFlow ecosystem today</p>
+    </header>
+
+    <!-- Registration Form -->
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm" class="signup-form">
+      
+      <!-- Multi-column Row -->
+      <div class="form-row">
+        <div class="field-item">
+          <label for="name">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            [(ngModel)]="userData.name" 
+            required 
+            placeholder="John Doe"
+          >
+        </div>
+
+        <div class="field-item">
+          <label for="role">Register As</label>
+          <select id="role" name="role" [(ngModel)]="userData.role" required>
+            <option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Multi-column Row -->
+      <div class="form-row">
+        <div class="field-item">
+          <label for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            [(ngModel)]="userData.email" 
+            required 
+            placeholder="name@example.com"
+          >
+        </div>
+
+        <div class="field-item">
+          <label for="phone">Phone Number</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="phone" 
+            [(ngModel)]="userData.phone" 
+            required 
+            placeholder="+1 234 567 890"
+          >
+        </div>
+      </div>
+
+      <!-- Security Section -->
+      <div class="field-item">
+        <label for="password">Security Password</label>
+        <div class="password-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="userData.password" 
+            required 
+            minlength="6" 
+            placeholder="••••••••"
+          >
+          <span class="password-hint">Minimum 6 secure characters</span>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div *ngIf="error" class="error-feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>{{ error }}</span>
+      </div>
+
+      <!-- Actions -->
+      <button type="submit" class="primary-action" [disabled]="signupForm.invalid || loading">
+        <span *ngIf="!loading">Create Premium Account</span>
+        <span *ngIf="loading" class="processing">
+          <svg class="spinner" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          </svg>
+          Initializing...
+        </span>
+      </button>
+
+      <footer class="signup-footer">
+        <p>Already a member? <a routerLink="/login">Sign In instead</a></p>
+      </footer>
+
+    </form>
+  </div>
+</main>

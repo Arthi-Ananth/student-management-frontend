@@ -1,0 +1,195 @@
+<!-- 🛡️ Admin Dashboard - Full Functionality -->
+<div class="admin-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar-portal">
+    <header class="sidebar-header">
+      <div class="logo-box">A</div>
+      <span class="brand-text">ASMS <strong>Admin</strong></span>
+    </header>
+    <nav class="sidebar-nav">
+      <ul class="nav-menu">
+        <li>
+          <button class="nav-item" [class.active]="activeTab === 'overview'" (click)="setTab('overview')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>Overview</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item" [class.active]="activeTab === 'users'" (click)="setTab('users')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-12 0v1z"/></svg>
+            <span>User Management</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-item" [class.active]="activeTab === 'courses'" (click)="setTab('courses')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <span>Course Management</span>
+          </button>
+        </li>
+      </ul>
+      <button (click)="logout()" class="logout-action">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span>Sign Out</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Viewport -->
+  <div class="main-canvas">
+    <header class="app-header">
+      <div class="greeting-block">
+        <h2 class="header-title">
+          {{ activeTab === 'overview' ? 'Command Center' : activeTab === 'users' ? 'User Management' : 'Course Management' }}
+        </h2>
+        <p class="header-subtitle">System running normally · {{ users.length }} users · {{ courses.length }} courses</p>
+      </div>
+    </header>
+
+    <main class="dashboard-content fade-up">
+
+      <!-- Error Banner -->
+      <div *ngIf="error" class="error-banner">
+        <span>⚠️ {{ error }}</span>
+        <button (click)="error = ''">✕</button>
+      </div>
+
+      <!-- ✅ TAB: Overview -->
+      <ng-container *ngIf="activeTab === 'overview'">
+        <section class="stats-grid">
+          <article *ngFor="let stat of systemStats" class="stat-card">
+            <header class="stat-header">
+              <div class="stat-icon-box">
+                <svg *ngIf="stat.icon === 'users'" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <svg *ngIf="stat.icon === 'book'" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <svg *ngIf="stat.icon === 'dollar'" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                <svg *ngIf="stat.icon === 'activity'" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <span class="change-badge" [attr.data-type]="stat.change.startsWith('+') ? 'success' : 'danger'">{{ stat.change }}</span>
+            </header>
+            <div class="stat-body">
+              <span class="stat-label">{{ stat.label }}</span>
+              <h3 class="stat-value">{{ stat.value }}</h3>
+            </div>
+          </article>
+        </section>
+
+        <section class="ops-layout">
+          <div class="logs-container">
+            <div class="section-title-box">
+              <h3 class="inner-title">System Logs</h3>
+            </div>
+            <ul class="log-list">
+              <li *ngFor="let log of recentLogs" class="log-item">
+                <div class="log-indicator" [attr.data-type]="log.type"></div>
+                <div class="log-info">
+                  <p class="log-action">{{ log.action }}</p>
+                  <p class="log-meta">{{ log.user }} · {{ log.time }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="actions-container">
+            <h3 class="inner-title">Quick Actions</h3>
+            <div class="action-grid">
+              <button class="big-action-btn" (click)="setTab('users')">
+                <div class="action-icon-wrapper secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 01-12 0v1z"/></svg>
+                </div>
+                <span>Manage Users</span>
+              </button>
+              <button class="big-action-btn" (click)="setTab('courses')">
+                <div class="action-icon-wrapper warning">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13"/></svg>
+                </div>
+                <span>Manage Courses</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </ng-container>
+
+      <!-- ✅ TAB: User Management -->
+      <ng-container *ngIf="activeTab === 'users'">
+        <div class="table-toolbar">
+          <div class="filter-tabs">
+            <button class="filter-btn" [class.active]="roleFilter === 'all'" (click)="setRoleFilter('all')">All ({{ users.length }})</button>
+            <button class="filter-btn" [class.active]="roleFilter === 'student'" (click)="setRoleFilter('student')">Students</button>
+            <button class="filter-btn" [class.active]="roleFilter === 'teacher'" (click)="setRoleFilter('teacher')">Teachers</button>
+            <button class="filter-btn" [class.active]="roleFilter === 'admin'" (click)="setRoleFilter('admin')">Admins</button>
+          </div>
+        </div>
+
+        <div class="data-table-wrapper">
+          <div *ngIf="loading" class="loading-state">Loading users...</div>
+          <table class="data-table" *ngIf="!loading">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of filteredUsers">
+                <td class="td-name">
+                  <div class="avatar-cell">
+                    <div class="avatar-dot" [attr.data-role]="user.role">{{ user.name[0].toUpperCase() }}</div>
+                    <span>{{ user.name }}</span>
+                  </div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td><span class="role-badge" [attr.data-role]="user.role">{{ user.role }}</span></td>
+                <td><span class="status-badge" [attr.data-verified]="user.isVerified">{{ user.isVerified ? 'Verified' : 'Unverified' }}</span></td>
+                <td>
+                  <button class="danger-btn" (click)="deleteUser(user)">Delete</button>
+                </td>
+              </tr>
+              <tr *ngIf="filteredUsers.length === 0">
+                <td colspan="5" class="empty-row">No users found for this filter.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+      <!-- ✅ TAB: Course Management -->
+      <ng-container *ngIf="activeTab === 'courses'">
+        <div class="data-table-wrapper">
+          <div *ngIf="loading" class="loading-state">Loading courses...</div>
+          <table class="data-table" *ngIf="!loading">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Title</th>
+                <th>Teacher</th>
+                <th>Students</th>
+                <th>Schedule</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let course of courses">
+                <td><span class="code-tag">{{ course.code }}</span></td>
+                <td class="td-bold">{{ course.title }}</td>
+                <td>{{ course.teacher?.name || 'N/A' }}</td>
+                <td>{{ course.students?.length || 0 }} enrolled</td>
+                <td>{{ course.schedule }}</td>
+                <td>
+                  <button class="danger-btn" (click)="deleteCourse(course)">Delete</button>
+                </td>
+              </tr>
+              <tr *ngIf="courses.length === 0">
+                <td colspan="6" class="empty-row">No courses found.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+
+    </main>
+  </div>
+</div>

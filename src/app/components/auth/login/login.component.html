@@ -1,0 +1,90 @@
+<!-- 🎨 Premium Semantic Login (Screenshot Match) -->
+<main class="auth-viewport">
+  <div class="login-card fade-up">
+    
+    <!-- Left: Authentication Form -->
+    <section class="form-container">
+      <header class="brand-header">
+        <div class="brand-logo">L</div>
+        <span class="brand-name">Landino</span>
+      </header>
+
+      <div class="auth-content">
+        <h2 class="auth-title">Login</h2>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+          <div class="field-item">
+            <div class="field-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
+              </svg>
+              <input 
+                type="email" 
+                name="email" 
+                [(ngModel)]="credentials.email" 
+                placeholder="Person@gmail.com"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="field-item">
+            <div class="field-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <input 
+                type="password" 
+                name="password" 
+                [(ngModel)]="credentials.password" 
+                placeholder="Password"
+                required
+              >
+            </div>
+          </div>
+
+          <footer class="form-footer">
+            <label class="remember-me">
+              <input type="checkbox">
+              <span>Remember Password</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </footer>
+
+          <button type="submit" class="submit-action" [disabled]="loginForm.invalid || loading">
+            <span *ngIf="!loading">Login</span>
+            <span *ngIf="loading">Processing...</span>
+          </button>
+
+          <div class="divider">
+            <span>Or Login With</span>
+          </div>
+
+          <div class="social-actions">
+            <button type="button" class="social-item">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.04 1.72-3.23 2.3-1.19.57-2.43.86-3.71.86-1.57 0-3.03-.43-4.36-1.29s-2.39-2.06-3.17-3.6C1.79 16.99 1.4 15.31 1.4 13.5c0-1.87.39-3.59 1.16-5.16s1.86-2.83 3.26-3.79c1.4-1.12 3-1.68 4.79-1.68.96 0 1.88.16 2.76.48.88.32 1.63.76 2.25 1.33-1.03 1.05-1.99 1.95-2.88 2.7l-2.04-1.89c-.5-.45-1.04-.68-1.62-.68-1.55 0-2.83.56-3.84 1.68A6.36 6.36 0 003.7 11.5c0 1.05.21 2.03.63 2.94.42.91 1 1.68 1.74 2.31.74.63 1.58.95 2.52.95 1.42 0 2.59-.51 3.51-1.53.64-.7 1.06-1.57 1.26-2.61H9.9v-3.6h9.1v3.6c-.33 1.57-.96 3.01-1.89 4.31-.62.87-1.31 1.67-2.06 2.4z"/></svg>
+            </button>
+            <!-- Add other social buttons here -->
+          </div>
+
+          <p class="signup-prompt">
+            Not account yet? <a routerLink="/signup">Register</a>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Right: Illustrative Area -->
+    <section class="visual-container">
+      <div class="illustration">
+        <!-- High-quality SVG placeholder for the designer illustration -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+          <circle cx="400" cy="300" r="280" fill="#ccfbf1" fill-opacity="0.5"/>
+          <rect x="250" y="200" width="300" height="200" rx="20" fill="white" stroke="#2dd4bf" stroke-width="4"/>
+          <path d="M300 240h200M300 280h150M300 320h100" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </section>
+
+  </div>
+</main>
